@@ -51,14 +51,32 @@ def instalar_via_web(navegador):
 
 def instalar_offline(navegador):
     try:
-        # Caminho do instalador offline
-        instalador = f"offline_installers/{navegador}.exe"
+        # Caminho relativo do instalador offline
+        instalador = os.path.join("offline_installers", f"{navegador}.exe")
         if os.path.exists(instalador):
-            subprocess.run([instalador], check=True)
+            # Atualizar barra de progresso e status para instalação offline
+            barra_progresso["value"] = 50
+            status_label.config(text=f"Instalando {navegador} offline...")
+            janela.update_idletasks()
+
+            # Executar o instalador
+            subprocess.run([instalador, "/silent", "/install"], check=True)
+
+            # Atualizar barra de progresso e status para finalização
+            barra_progresso["value"] = 100
+            status_label.config(text=f"{navegador} instalado com sucesso!")
+            janela.update_idletasks()
+
             messagebox.showinfo("Sucesso", f"{navegador} foi instalado com sucesso!")
         else:
+            barra_progresso["value"] = 0
+            status_label.config(text=f"Instalador offline para {navegador} não encontrado.")
+            janela.update_idletasks()
             messagebox.showerror("Erro", f"Instalador offline para {navegador} não encontrado.")
     except Exception as e:
+        barra_progresso["value"] = 0
+        status_label.config(text=f"Erro ao instalar {navegador} offline.")
+        janela.update_idletasks()
         messagebox.showerror("Erro", f"Erro ao instalar {navegador}: {e}")
 
 # Configuração da interface gráfica
