@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import subprocess
 import os
+from PIL import Image, ImageTk
 
 def instalar_via_web(navegador):
     try:
@@ -91,9 +92,23 @@ titulo.pack(pady=10)
 # Lista de navegadores
 navegadores = ["Chrome", "Firefox", "Brave", "Opera", "Edge"]
 
+# Dicionário para armazenar as logos
+logos = {}
+
+# Carregar e redimensionar a logo do Firefox
+logo_path = os.path.join("logos", "firefox.png")
+if os.path.exists(logo_path):
+    logo_image = Image.open(logo_path).resize((32, 32), Image.ANTIALIAS)
+    logos["Firefox"] = ImageTk.PhotoImage(logo_image)
+
 for navegador in navegadores:
     frame = tk.Frame(janela)
     frame.pack(pady=5)
+
+    # Adicionar logo se disponível
+    if navegador in logos:
+        logo_label = tk.Label(frame, image=logos[navegador])
+        logo_label.pack(side=tk.LEFT, padx=5)
 
     label = tk.Label(frame, text=navegador, font=("Arial", 12))
     label.pack(side=tk.LEFT, padx=10)
