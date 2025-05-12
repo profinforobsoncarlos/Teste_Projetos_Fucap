@@ -98,7 +98,7 @@ logos = {}
 # Carregar e redimensionar a logo do Firefox
 logo_path = os.path.join("logos", "firefox.png")
 if os.path.exists(logo_path):
-    logo_image = Image.open(logo_path).resize((32, 32), Image.ANTIALIAS)
+    logo_image = Image.open(logo_path).resize((32, 32), Image.Resampling.LANCZOS)
     logos["Firefox"] = ImageTk.PhotoImage(logo_image)
 
 for navegador in navegadores:
